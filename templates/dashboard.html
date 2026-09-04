@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard Admin | Paso Firme</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-mark">PF</span>
+                <div>
+                    <strong>PASO FIRME</strong>
+                    <small>ADMIN CONSOLE</small>
+                </div>
+            </div>
+
+            <div class="admin-badge">
+                <span class="avatar avatar-admin">AR</span>
+                <div>
+                    <strong>Alex Rivera</strong>
+                    <span>Administrador</span>
+                </div>
+                <span class="online-dot"></span>
+            </div>
+
+            <nav class="main-nav" aria-label="Navegacion principal">
+                <p class="nav-label">PRINCIPAL</p>
+                <a class="nav-item active" href="#overview"><span class="nav-icon">▦</span>Resumen</a>
+                <a class="nav-item" href="#orders"><span class="nav-icon">⌁</span>Pedidos <b class="nav-count">8</b></a>
+                <a class="nav-item" href="#products"><span class="nav-icon">◇</span>Productos</a>
+                <a class="nav-item" href="#customers"><span class="nav-icon">♧</span>Clientes</a>
+
+                <p class="nav-label nav-label-spaced">GESTION</p>
+                <a class="nav-item" href="#analytics"><span class="nav-icon">◒</span>Analitica</a>
+                <a class="nav-item" href="#promotions"><span class="nav-icon">✦</span>Promociones</a>
+                <a class="nav-item" href="#settings"><span class="nav-icon">⚙</span>Configuracion</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="help-card">
+                    <span class="help-icon">?</span>
+                    <div><strong>Centro de ayuda</strong><span>Estamos para ayudarte</span></div>
+                    <span class="arrow">→</span>
+                </div>
+                <a class="logout" href="#logout"><span>↪</span> Cerrar sesion</a>
+            </div>
+        </aside>
+
+        <main class="content" id="overview">
+            <header class="topbar">
+                <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+                <div class="breadcrumb"><span>Panel</span><b>/</b> Resumen</div>
+                <div class="top-actions">
+                    <button class="icon-button" aria-label="Buscar">⌕</button>
+                    <button class="icon-button notification" aria-label="Notificaciones"><span>♧</span><i></i></button>
+                    <span class="top-divider"></span>
+                    <div class="top-user"><span class="avatar avatar-small">AR</span><span>Alex Rivera</span><b>⌄</b></div>
+                </div>
+            </header>
+
+            <div class="page-heading">
+                <div>
+                    <p class="eyebrow">JUEVES, 04 DE SEPTIEMBRE DE 2026</p>
+                    <h1>Buenos dias, Alex <span>✦</span></h1>
+                    <p class="subtitle">Aqui tienes lo que esta pasando en tu tienda hoy.</p>
+                </div>
+                <button class="primary-button"><span>＋</span> Nuevo producto</button>
+            </div>
+
+            <section class="stats-grid" aria-label="Resumen de indicadores">
+                {% for stat in stats %}
+                <article class="stat-card">
+                    <div class="stat-top"><span>{{ stat.label }}</span><span class="stat-icon icon-{{ stat.icon }}"></span></div>
+                    <div class="stat-value">{{ stat.value }}</div>
+                    <div class="stat-change {{ stat.trend }}"><span>{% if stat.trend == 'up' %}↗{% else %}•{% endif %}</span> {{ stat.change }} <em>vs. mes anterior</em></div>
+                </article>
+                {% endfor %}
+            </section>
+
+            <section class="dashboard-grid">
+                <article class="panel sales-panel">
+                    <div class="panel-heading">
+                        <div><h2>Rendimiento de ventas</h2><p>Ingresos comparados con el periodo anterior</p></div>
+                        <button class="select-button">Ultimos 7 dias <span>⌄</span></button>
+                    </div>
+                    <div class="chart-wrap">
+                        <div class="chart-y-axis"><span>$8k</span><span>$6k</span><span>$4k</span><span>$2k</span><span>$0</span></div>
+                        <div class="chart-area">
+                            <div class="grid-line"></div><div class="grid-line"></div><div class="grid-line"></div><div class="grid-line"></div><div class="grid-line"></div>
+                            <svg class="sales-chart" viewBox="0 0 700 220" preserveAspectRatio="none" aria-label="Grafica de ventas">
+                                <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#c7e7df" stop-opacity=".75"/><stop offset="100%" stop-color="#c7e7df" stop-opacity=".06"/></linearGradient></defs>
+                                <path class="chart-fill" d="M0,175 C45,155 65,166 105,130 S170,145 210,115 S270,88 310,112 S360,145 395,102 S455,72 490,92 S550,50 585,68 S650,45 700,20 L700,220 L0,220 Z"/>
+                                <path class="chart-line" d="M0,175 C45,155 65,166 105,130 S170,145 210,115 S270,88 310,112 S360,145 395,102 S455,72 490,92 S550,50 585,68 S650,45 700,20"/>
+                                <circle cx="585" cy="68" r="5" class="chart-point"/>
+                            </svg>
+                            <div class="chart-x-axis"><span>Lun 29</span><span>Mar 30</span><span>Mie 01</span><span>Jue 02</span><span>Vie 03</span><span>Sab 04</span><span>Dom 05</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel inventory-panel" id="products">
+                    <div class="panel-heading"><div><h2>Inventario</h2><p>Estado actual de tus productos</p></div><a href="#inventory" class="text-link">Ver todo <span>→</span></a></div>
+                    <div class="inventory-content">
+                        <div class="donut"><div class="donut-hole"><strong>486</strong><span>productos</span></div></div>
+                        <div class="legend"><div><i class="legend-dot in-stock"></i><span>En stock</span><strong>392</strong></div><div><i class="legend-dot low-stock"></i><span>Stock bajo</span><strong>58</strong></div><div><i class="legend-dot out-stock"></i><span>Agotados</span><strong>36</strong></div></div>
+                    </div>
+                    <div class="inventory-alert"><span>!</span><p><strong>12 productos</strong> necesitan atencion</p><a href="#restock">Revisar</a></div>
+                </article>
+            </section>
+
+            <section class="panel orders-panel" id="orders">
+                <div class="panel-heading"><div><h2>Pedidos recientes</h2><p>Gestiona los ultimos pedidos de tus clientes</p></div><a href="#all-orders" class="text-link">Ver todos <span>→</span></a></div>
+                <div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Producto</th><th>Total</th><th>Estado</th><th></th></tr></thead><tbody>{% for order in recent_orders %}<tr><td><strong>{{ order.id }}</strong></td><td><div class="customer"><span class="avatar avatar-customer">{{ order.initials }}</span>{{ order.customer }}</div></td><td>{{ order.product }}</td><td><strong>{{ order.amount }}</strong></td><td><span class="status {{ order.status_class }}"><i></i>{{ order.status }}</span></td><td><button class="more-button" aria-label="Mas opciones">•••</button></td></tr>{% endfor %}</tbody></table></div>
+            </section>
+            <footer class="footer">© 2026 Paso Firme <span>•</span> Panel de administracion</footer>
+        </main>
+    </div>
+</body>
+</html>
