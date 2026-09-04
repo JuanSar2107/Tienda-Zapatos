@@ -1,3 +1,110 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f2f3f5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 16px;
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 400px;
+}
+
+.tarjeta-auth {
+    background: #fff;
+    border-radius: 10px;
+    padding: 32px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta-auth h1 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #222;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-size: 0.85rem;
+    color: #444;
+    margin-top: 8px;
+}
+
+label.checkbox {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+button {
+    margin-top: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #2f5d50;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #244a40;
+}
+
+.enlace {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.9rem;
+}
+
+.boton-salir {
+    display: inline-block;
+    margin-top: 16px;
+    color: #b32424;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.alertas {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+}
+
+.alerta {
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.alerta-success { background: #dff5e1; color: #1f6d33; }
+.alerta-danger  { background: #fde2e1; color: #9c1c14; }
+.alerta-warning { background: #fff3cd; color: #7a5b00; }
+.alerta-info    { background: #e2eefc; color: #1a4f8a; }
 :root { --ink: #25282d; --muted: #8a9098; --line: #edf0f3; --paper: #f5f6f8; --white: #fff; --blue: #32b7ee; --orange: #ff9a36; --green: #35c998; --red: #ff6e6e; }
 * { box-sizing: border-box; }
 body { background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif; margin: 0; }
