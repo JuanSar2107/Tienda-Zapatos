@@ -12,25 +12,22 @@
 <body>
     <div class="store-shell">
         <aside class="sidebar">
-            <a class="brand" href="#dashboard"><span class="brand-mark">◔</span><strong>Teen Shoes</strong></a>
+            <a class="brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Teen Shoes</strong></a>
             <nav class="main-nav" aria-label="Navegacion principal">
-                <a class="nav-item active" href="#dashboard"><span>⊞</span>Dashboard</a>
-                <a class="nav-item" href="#orders"><span>♧</span>Pedidos</a>
-                <a class="nav-item" href="#products"><span>◇</span>Productos</a>
-                <a class="nav-item" href="#wallet"><span>▱</span>Mis ventas</a>
-                <a class="nav-item" href="#help"><span>ⓘ</span>Ayuda</a>
-                <a class="nav-item" href="#settings"><span>⚙</span>Configuracion</a>
+                <a class="nav-item active" href="{{ url_for('users.dashboard') }}"><span>⊞</span>Dashboard</a>
+                <a class="nav-item" href="{{ url_for('users.pedidos') }}"><span>♧</span>Mis pedidos</a>
+                <a class="nav-item" href="{{ url_for('users.facturas') }}"><span>🧾</span>Facturas</a>
             </nav>
-            <a class="logout" href="#logout"><span>↪</span>Cerrar sesion</a>
+            <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
         </aside>
 
         <main class="main-content" id="dashboard">
             <header class="topbar">
                 <div class="search-box"><span>⌕</span><input type="search" placeholder="Buscar productos, cupones, precios..." aria-label="Buscar"></div>
-                <div class="top-user"><button class="top-icon" aria-label="Notificaciones">♧<i></i></button><button class="top-icon" aria-label="Mensajes">▱</button><span class="avatar">AR</span><div><strong>{{ admin.name }}</strong><small>Administrador</small></div></div>
+                <div class="top-user"><button class="top-icon" aria-label="Notificaciones">♧<i></i></button><button class="top-icon" aria-label="Mensajes">▱</button><span class="avatar">AR</span><div><strong>{{ cliente.name }}</strong><small>Cliente</small></div></div>
             </header>
 
-            <div class="dashboard-grid">
+            <div class="dashboard-grid single-column">
                 <section class="primary-column">
                     <div class="section-heading"><h1>Los mas vendidos del mes</h1><button class="more-button" aria-label="Mas opciones">•••</button></div>
                     <div class="bestsellers">
@@ -43,11 +40,6 @@
                     <div class="categories" aria-label="Categorias de productos"><button class="category active">Zapatos deportivos</button><button class="category">Zapatos de vestir</button><button class="category">Sneakers</button><button class="category">Ballet</button><button class="category">Sandalias</button></div>
                     <div class="products-grid" id="products">{% for product in products %}<a class="product-card" href="{{ url_for('users.product_detail', product_id=product.id) }}"><div class="product-image"><img src="{{ product.image }}" alt="{{ product.name }}"><span class="favorite" aria-hidden="true">♡</span></div><strong>{{ product.name }}</strong><span class="stars">★★★★★</span><b>{{ product.price }}</b></a>{% endfor %}</div>
                 </section>
-
-                <aside class="right-column">
-                    <section class="side-section"><div class="section-heading"><h2>Ventas por ubicacion</h2><button class="more-button" aria-label="Mas opciones">•••</button></div><div class="location-list">{% for location in locations %}<div class="location-row"><span class="flag">{{ location.flag }}</span><div><strong>{{ location.name }}</strong><small>{{ location.sales }}</small></div><span class="mini-chart {{ location.trend }}">⌁</span><em class="{{ location.trend }}">{{ location.change }}</em></div>{% endfor %}</div></section>
-                    <section class="side-section orders-section" id="orders"><div class="section-heading"><h2>Pedidos</h2><button class="more-button" aria-label="Mas opciones">•••</button></div><div class="orders-table"><div class="order-header"><span>Producto</span><span>Cliente</span><span>Precio</span><span>Estado</span></div>{% for order in recent_orders %}<div class="order-row"><div class="order-product"><img src="{{ order.image }}" alt=""><span>{{ order.product }}</span></div><span class="order-customer">{{ order.customer }}</span><b>{{ order.amount }}</b><span class="order-status {{ order.status_class }}">{{ order.status }}</span></div>{% endfor %}</div></section>
-                </aside>
             </div>
         </main>
     </div>

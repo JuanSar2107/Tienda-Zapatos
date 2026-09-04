@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis pedidos | Teen Shoes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="store-shell">
+        <aside class="sidebar">
+            <a class="brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Teen Shoes</strong></a>
+            <nav class="main-nav" aria-label="Navegacion principal">
+                <a class="nav-item" href="{{ url_for('users.dashboard') }}"><span>⊞</span>Dashboard</a>
+                <a class="nav-item active" href="{{ url_for('users.pedidos') }}"><span>♧</span>Mis pedidos</a>
+                <a class="nav-item" href="{{ url_for('users.facturas') }}"><span>🧾</span>Facturas</a>
+            </nav>
+            <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="search-box"><span>⌕</span><input type="search" placeholder="Buscar en mis pedidos..." aria-label="Buscar"></div>
+                <div class="top-user"><button class="top-icon" aria-label="Notificaciones">♧<i></i></button><button class="top-icon" aria-label="Mensajes">▱</button><span class="avatar">AR</span><div><strong>{{ cliente.name }}</strong><small>Cliente</small></div></div>
+            </header>
+
+            <div class="section-heading list-heading">
+                <h1>Mis pedidos</h1>
+                <button class="more-button" aria-label="Mas opciones">•••</button>
+            </div>
+
+            <section class="side-section list-section">
+                <div class="list-table pedidos-table">
+                    <div class="list-header">
+                        <span>Producto</span>
+                        <span>Talla</span>
+                        <span>Color</span>
+                        <span>Precio</span>
+                        <span>Cant.</span>
+                        <span>Fecha</span>
+                        <span>Estado</span>
+                    </div>
+                    {% for pedido in pedidos %}
+                    <div class="list-row">
+                        <div class="order-product"><img src="{{ pedido.image }}" alt="{{ pedido.product }}"><span>{{ pedido.product }}</span></div>
+                        <span>{{ pedido.size }}</span>
+                        <span>{{ pedido.color }}</span>
+                        <b>{{ pedido.price }}</b>
+                        <span>{{ pedido.quantity }}</span>
+                        <span>{{ pedido.date }}</span>
+                        <span class="order-status {{ pedido.status_class }}">{{ pedido.status }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
