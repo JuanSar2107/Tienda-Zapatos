@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis ventas | Zapatito Estiloso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="store-shell sales-shell">
+        <aside class="sidebar">
+            <a class="brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a>
+            <nav class="main-nav" aria-label="Navegacion principal">
+                <a class="nav-item" href="{{ url_for('users.dashboard') }}"><span>⊞</span>Dashboard</a>
+                <a class="nav-item" href="{{ url_for('users.orders') }}"><span>♧</span>Pedidos</a>
+                <a class="nav-item active" href="{{ url_for('users.sales') }}"><span>$</span>Mis ventas</a>
+            </nav>
+            <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
+        </aside>
+        <main class="main-content">
+            <header class="topbar"><div></div><div class="top-user"><span class="avatar">AR</span><div><strong>Alex Rivera</strong><small>Administrador</small></div></div></header>
+            <section class="sales-page">
+                <div class="sales-heading"><div><p class="detail-label">CONTROL DEL NEGOCIO</p><h1>Mis ventas</h1><p class="cart-subtitle">Consulta el rendimiento de tus ventas y pedidos.</p></div><span class="sales-icon">$</span></div>
+                <form class="sales-search" method="get" action="{{ url_for('users.sales') }}"><span>⌕</span><input type="search" name="q" value="{{ query }}" placeholder="Buscar por cliente, producto o pedido..." aria-label="Buscar ventas"><button type="submit">Buscar</button></form>
+                <div class="sales-summary"><article><span>Ingresos mostrados</span><strong>{{ total }}</strong></article><article><span>Ventas exitosas</span><strong>{{ successful }}</strong></article><article><span>Pedidos encontrados</span><strong>{{ sales|length }}</strong></article></div>
+                <div class="sales-table"><div class="sales-table-header"><span>Pedido</span><span>Producto</span><span>Cliente</span><span>Ubicacion</span><span>Estado</span><span>Total</span></div>{% for sale in sales %}<a class="sales-row" href="{{ url_for('users.order_detail', order_id=sale.id) }}"><strong>#{{ sale.id }}</strong><span>{{ sale.product }}</span><span>{{ sale.customer }}</span><span>{{ sale.location }}</span><em class="order-status {{ sale.status_class }}">{{ sale.status }}</em><b>{{ sale.amount }}</b></a>{% else %}<p class="empty-results">No encontramos ventas con esa búsqueda.</p>{% endfor %}</div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

@@ -10,7 +10,7 @@ class DashboardTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Los mas vendidos del mes", response.data)
-        self.assertIn(b"Teen Shoes", response.data)
+        self.assertIn(b"Zapatito Estiloso", response.data)
 
 
 if __name__ == "__main__":
