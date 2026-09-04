@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tienda | Zapatito Estiloso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="store-shell">
+        <aside class="sidebar">
+            <a class="brand" href="{{ url_for('users.tienda') }}"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a>
+            <nav class="main-nav" aria-label="Navegacion principal">
+                <a class="nav-item active" href="{{ url_for('users.tienda') }}"><span>⊞</span>Tienda</a>
+            </nav>
+            <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <form class="search-box" action="{{ url_for('users.tienda') }}" method="get"><span>⌕</span><input type="search" name="q" value="{{ query }}" placeholder="Buscar productos..." aria-label="Buscar productos"><button type="submit" aria-label="Buscar">→</button></form>
+                <div class="top-user"><a class="cart-link" href="{{ url_for('users.cart') }}" aria-label="Abrir carrito">🛒{% if cart_count %}<b>{{ cart_count }}</b>{% endif %}</a><div class="account-area"><button class="account-trigger" type="button" aria-expanded="false"><span class="avatar">{{ current_user.nombre[:2].upper() }}</span><div><strong>{{ current_user.nombre }}</strong><small>Cliente</small></div><span class="account-chevron">⌄</span></button><div class="account-menu"><strong>{{ current_user.nombre }}</strong><span>{{ current_user.email }}</span><small>Rol: Cliente</small><a href="{{ url_for('auth.logout') }}">↪ Cerrar sesion</a></div></div></div>
+            </header>
+
+            <div class="dashboard-grid" style="grid-template-columns: 1fr;">
+                <section class="primary-column">
+                    <div class="section-heading products-heading"><div><h1>Productos</h1>{% if query %}<p class="search-result">Resultados para “{{ query }}”</p>{% endif %}</div></div>
+                    <div class="products-grid" id="products">{% for product in products %}<a class="product-card" href="{{ url_for('users.product_detail', product_id=product.id) }}"><div class="product-image"><img src="{{ product.image }}" alt="{{ product.name }}"></div><strong>{{ product.name }}</strong><span class="stars">★★★★★</span><b>{{ product.price }}</b></a>{% else %}<p class="empty-results">No encontramos productos con ese nombre.</p>{% endfor %}</div>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

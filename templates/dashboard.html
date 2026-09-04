@@ -24,7 +24,7 @@
         <main class="main-content" id="dashboard">
             <header class="topbar">
                 <form class="search-box" action="{{ url_for('users.dashboard') }}" method="get"><span>⌕</span><input type="search" name="q" value="{{ query }}" placeholder="Buscar productos..." aria-label="Buscar productos"><button type="submit" aria-label="Buscar">→</button></form>
-                <div class="top-user"><a class="cart-link" href="{{ url_for('users.cart') }}" aria-label="Abrir carrito">🛒{% if cart_count %}<b>{{ cart_count }}</b>{% endif %}</a><div class="account-area"><button class="account-trigger" type="button" aria-expanded="false"><span class="avatar">AR</span><div><strong>{{ admin.name }}</strong><small>Administrador</small></div><span class="account-chevron">⌄</span></button><div class="account-menu"><strong>{{ admin.name }}</strong><span>{{ admin.email }}</span><small>Rol: Administrador</small><a href="{{ url_for('auth.logout') }}">↪ Cerrar sesion</a></div></div></div>
+                <div class="top-user"><a class="cart-link" href="{{ url_for('users.cart') }}" aria-label="Abrir carrito">🛒{% if cart_count %}<b>{{ cart_count }}</b>{% endif %}</a><div class="account-area"><button class="account-trigger" type="button" aria-expanded="false"><span class="avatar">{{ admin.nombre[:2].upper() }}</span><div><strong>{{ admin.nombre }}</strong><small>Administrador</small></div><span class="account-chevron">⌄</span></button><div class="account-menu"><strong>{{ admin.nombre }}</strong><span>{{ admin.email }}</span><small>Rol: Administrador</small><a href="{{ url_for('auth.logout') }}">↪ Cerrar sesion</a></div></div></div>
             </header>
 
             <div class="dashboard-grid">

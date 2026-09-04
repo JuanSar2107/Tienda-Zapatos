@@ -21,7 +21,7 @@
             <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
         </aside>
         <main class="main-content">
-            <header class="topbar"><div></div><div class="top-user"><span class="avatar">AR</span><div><strong>Alex Rivera</strong><small>Administrador</small></div></div></header>
+            <header class="topbar"><div></div><div class="top-user"><span class="avatar">{{ current_user.nombre[:2].upper() }}</span><div><strong>{{ current_user.nombre }}</strong><small>Administrador</small></div></div></header>
             <section class="sales-page">
                 <div class="sales-heading"><div><p class="detail-label">CONTROL DEL NEGOCIO</p><h1>Mis ventas</h1><p class="cart-subtitle">Consulta el rendimiento de tus ventas y pedidos.</p></div><span class="sales-icon">$</span></div>
                 <form class="sales-search" method="get" action="{{ url_for('users.sales') }}"><span>⌕</span><input type="search" name="q" value="{{ query }}" placeholder="Buscar por cliente, producto o pedido..." aria-label="Buscar ventas"><button type="submit">Buscar</button></form>

@@ -1,17 +1,19 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+from flask_login import current_user, login_required
 
+from auth.decorators import admin_required
 from models.products import get_products
 from models.orders import STATUS_OPTIONS, get_orders, update_order_status
 from models.sales import get_sales
-from models.users import User
 
 
 users_bp = Blueprint("users", __name__)
 
 
 @users_bp.get("/")
+@admin_required
 def dashboard():
-    admin = User(name="Alex Rivera", email="admin@pasofirme.com")
+    admin = current_user
     query = request.args.get("q", "").strip()
     all_products = get_products()
     products = [
@@ -32,7 +34,21 @@ def dashboard():
     return render_template("dashboard.html", admin=admin, products=products, featured_products=all_products[:3], locations=locations, recent_orders=recent_orders, query=query, cart_count=len(cart))
 
 
+@users_bp.get("/tienda")
+@login_required
+def tienda():
+    query = request.args.get("q", "").strip()
+    all_products = get_products()
+    products = [
+        product for product in all_products
+        if not query or query.lower() in product["name"].lower()
+    ]
+    cart = session.get("cart", [])
+    return render_template("tienda.html", products=products, query=query, cart_count=len(cart))
+
+
 @users_bp.route("/products/<int:product_id>", methods=["GET", "POST"])
+@login_required
 def product_detail(product_id):
     product = next((item for item in get_products() if item["id"] == product_id), None)
     if product is None:
@@ -54,6 +70,7 @@ def product_detail(product_id):
 
 
 @users_bp.get("/cart")
+@login_required
 def cart():
     items = session.get("cart", [])
     total = sum(float(item["price"].replace("$", "").replace(",", "")) for item in items)
@@ -61,6 +78,7 @@ def cart():
 
 
 @users_bp.post("/cart/remove/<int:item_index>")
+@login_required
 def remove_from_cart(item_index):
     cart_items = session.get("cart", [])
     if 0 <= item_index < len(cart_items):
@@ -71,6 +89,7 @@ def remove_from_cart(item_index):
 
 
 @users_bp.post("/cart/checkout")
+@login_required
 def checkout():
     if not session.get("cart"):
         flash("Tu carrito esta vacio.", "error")
@@ -81,6 +100,7 @@ def checkout():
 
 
 @users_bp.get("/orders")
+@admin_required
 def orders():
     selected_status = request.args.get("status", "Todos")
     customer_query = request.args.get("customer", "").strip()
@@ -94,6 +114,7 @@ def orders():
 
 
 @users_bp.route("/orders/<order_id>", methods=["GET", "POST"])
+@admin_required
 def order_detail(order_id):
     order = next((item for item in get_orders() if item["id"] == order_id), None)
     if order is None:
@@ -110,6 +131,7 @@ def order_detail(order_id):
 
 
 @users_bp.get("/sales")
+@admin_required
 def sales():
     query = request.args.get("q", "").strip().lower()
     all_sales = get_sales()

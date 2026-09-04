@@ -11,20 +11,20 @@
 </head>
 <body>
     <div class="store-shell detail-shell">
+        {% set inicio = url_for('users.dashboard') if current_user.is_admin else url_for('users.tienda') %}
         <aside class="sidebar">
-            <a class="brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a>
+            <a class="brand" href="{{ inicio }}"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a>
             <nav class="main-nav" aria-label="Navegacion principal">
-                <a class="nav-item active" href="{{ url_for('users.dashboard') }}"><span>⊞</span>Dashboard</a>
-                <a class="nav-item" href="#orders"><span>♧</span>Pedidos</a>
-                <a class="nav-item" href="{{ url_for('users.dashboard') }}#products"><span>◇</span>Productos</a>
+                <a class="nav-item active" href="{{ inicio }}"><span>⊞</span>{{ 'Dashboard' if current_user.is_admin else 'Tienda' }}</a>
+                {% if current_user.is_admin %}
+                <a class="nav-item" href="{{ url_for('users.orders') }}"><span>♧</span>Pedidos</a>
                 <a class="nav-item" href="{{ url_for('users.sales') }}"><span>$</span>Mis ventas</a>
-                <a class="nav-item" href="#help"><span>ⓘ</span>Ayuda</a>
-                <a class="nav-item" href="#settings"><span>⚙</span>Configuracion</a>
+                {% endif %}
             </nav>
-            <a class="logout" href="#logout"><span>↪</span>Cerrar sesion</a>
+            <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
         </aside>
         <main class="main-content">
-            <header class="topbar"><a class="back-link" href="{{ url_for('users.dashboard') }}">← Volver al dashboard</a><div class="top-user"><span class="avatar">AR</span><div><strong>Alex Rivera</strong><small>Administrador</small></div></div></header>
+            <header class="topbar"><a class="back-link" href="{{ inicio }}">← Volver</a><div class="top-user"><span class="avatar">{{ current_user.nombre[:2].upper() }}</span><div><strong>{{ current_user.nombre }}</strong><small>{{ 'Administrador' if current_user.is_admin else 'Cliente' }}</small></div></div></header>
             <div class="detail-breadcrumb">Productos <span>/</span> {{ product.name }}</div>
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}<div class="flash-list">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}

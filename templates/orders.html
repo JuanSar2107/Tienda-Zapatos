@@ -21,7 +21,7 @@
             <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
         </aside>
         <main class="main-content">
-            <header class="topbar"><div></div><div class="top-user"><span class="avatar">AR</span><div><strong>Alex Rivera</strong><small>Administrador</small></div></div></header>
+            <header class="topbar"><div></div><div class="top-user"><span class="avatar">{{ current_user.nombre[:2].upper() }}</span><div><strong>{{ current_user.nombre }}</strong><small>Administrador</small></div></div></header>
             <section class="orders-page">
                 <div class="orders-title"><div><p class="detail-label">GESTION DE TIENDA</p><h1>Pedidos</h1><p class="cart-subtitle">Consulta y actualiza los pedidos de tus clientes.</p></div><span class="orders-icon">♧</span></div>
                 <div class="orders-toolbar"><form class="orders-search" method="get" action="{{ url_for('users.orders') }}"><span>⌕</span><input type="search" name="customer" value="{{ customer_query }}" placeholder="Buscar por cliente..." aria-label="Buscar pedidos por cliente"><input type="hidden" name="status" value="{{ selected_status }}"><button type="submit">Buscar</button></form><nav class="order-filters" aria-label="Filtrar pedidos">{% for status in ["Todos", "Pendiente", "Enviando", "Exitoso"] %}<a class="order-filter {% if selected_status == status %}active{% endif %}" href="{{ url_for('users.orders', status=status, customer=customer_query) }}">{{ status }}</a>{% endfor %}</nav></div>

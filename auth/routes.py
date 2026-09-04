@@ -3,14 +3,19 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from auth import db
 from auth.models import User
+from roles import USER_ROLE
 
 auth_bp = Blueprint("auth", __name__, template_folder="../templates")
+
+
+def _home_for(usuario):
+    return url_for("users.dashboard") if usuario.is_admin else url_for("users.tienda")
 
 
 @auth_bp.route("/registro", methods=["GET", "POST"])
 def registro():
     if current_user.is_authenticated:
-        return redirect(url_for("auth.dashboard"))
+        return redirect(_home_for(current_user))
 
     if request.method == "POST":
         nombre = request.form.get("nombre", "").strip()
@@ -27,7 +32,7 @@ def registro():
         elif User.query.filter_by(email=email).first():
             flash("Ya existe una cuenta con ese correo.", "danger")
         else:
-            usuario = User(nombre=nombre, email=email)
+            usuario = User(nombre=nombre, email=email, role=USER_ROLE)
             usuario.set_password(password)
             db.session.add(usuario)
             db.session.commit()
@@ -40,7 +45,7 @@ def registro():
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("auth.dashboard"))
+        return redirect(_home_for(current_user))
 
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
@@ -53,17 +58,11 @@ def login():
             login_user(usuario, remember=recordarme)
             siguiente = request.args.get("next")
             flash(f"Bienvenido, {usuario.nombre}.", "success")
-            return redirect(siguiente or url_for("auth.dashboard"))
+            return redirect(siguiente or _home_for(usuario))
 
         flash("Correo o contraseña incorrectos.", "danger")
 
     return render_template("login.html")
-
-
-@auth_bp.route("/dashboard")
-@login_required
-def dashboard():
-    return render_template("dashboard.html", usuario=current_user)
 
 
 @auth_bp.route("/logout")
