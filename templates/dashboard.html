@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Panel{% endblock %}
+{% block content %}
+<div class="tarjeta-auth">
+    <h1>Hola, {{ usuario.nombre }}</h1>
+    <p>Has iniciado sesión con el correo <strong>{{ usuario.email }}</strong>.</p>
+    <p><em>Aquí el resto del equipo puede conectar el catálogo de zapatos, carrito, etc.</em></p>
+    <a class="boton-salir" href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+</div>
+{% endblock %}
