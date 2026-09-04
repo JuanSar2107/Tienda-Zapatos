@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi carrito | Zapatito Estiloso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="store-shell cart-shell">
+        <main class="main-content">
+            <header class="topbar cart-topbar"><a class="brand cart-brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a><div class="top-user"><a class="back-link" href="{{ url_for('users.dashboard') }}">← Dashboard</a><span class="avatar">AR</span><div><strong>Alex Rivera</strong><small>Administrador</small></div></div></header>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}<div class="flash-list">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+            {% endwith %}
+            <section class="cart-page">
+                <div class="cart-heading"><div><p class="detail-label">ZAPATITO ESTILOSO</p><h1>Mi carrito</h1><p class="cart-subtitle">Revisa tus productos antes de finalizar la compra.</p></div><span class="cart-big-icon">🛒</span></div>
+                {% if items %}
+                    <div class="cart-list">{% for item in items %}<article class="cart-item"><img src="{{ item.image|default('') }}" alt="{{ item.name }}"><div class="cart-item-info"><h2>{{ item.name }}</h2><p>Talla: <strong>{{ item.size }}</strong> <span>•</span> Color: <strong>{{ item.color }}</strong></p><b>{{ item.price }}</b></div><form method="post" action="{{ url_for('users.remove_from_cart', item_index=loop.index0) }}"><button class="remove-button" type="submit">Quitar del carrito</button></form></article>{% endfor %}</div>
+                    <aside class="cart-summary"><h2>Resumen de compra</h2><div><span>Articulos</span><strong>{{ items|length }}</strong></div><div class="summary-total"><span>Total</span><strong>{{ total }}</strong></div><form method="post" action="{{ url_for('users.checkout') }}"><button class="checkout-button" type="submit">Finalizar compra <span>→</span></button></form></aside>
+                {% else %}<div class="empty-cart"><span>🛒</span><h2>Tu carrito esta vacio</h2><p>Agrega un producto para verlo aqui.</p><a class="continue-button" href="{{ url_for('users.dashboard') }}#products">Ver productos</a></div>{% endif %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>

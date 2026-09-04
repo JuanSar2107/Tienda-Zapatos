@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pedidos | Zapatito Estiloso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="store-shell orders-page-shell">
+        <aside class="sidebar">
+            <a class="brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a>
+            <nav class="main-nav" aria-label="Navegacion principal">
+                <a class="nav-item" href="{{ url_for('users.dashboard') }}"><span>⊞</span>Dashboard</a>
+                <a class="nav-item active" href="{{ url_for('users.orders') }}"><span>♧</span>Pedidos</a>
+                <a class="nav-item" href="{{ url_for('users.sales') }}"><span>$</span>Mis ventas</a>
+            </nav>
+            <a class="logout" href="{{ url_for('auth.logout') }}"><span>↪</span>Cerrar sesion</a>
+        </aside>
+        <main class="main-content">
+            <header class="topbar"><div></div><div class="top-user"><span class="avatar">AR</span><div><strong>Alex Rivera</strong><small>Administrador</small></div></div></header>
+            <section class="orders-page">
+                <div class="orders-title"><div><p class="detail-label">GESTION DE TIENDA</p><h1>Pedidos</h1><p class="cart-subtitle">Consulta y actualiza los pedidos de tus clientes.</p></div><span class="orders-icon">♧</span></div>
+                <div class="orders-toolbar"><form class="orders-search" method="get" action="{{ url_for('users.orders') }}"><span>⌕</span><input type="search" name="customer" value="{{ customer_query }}" placeholder="Buscar por cliente..." aria-label="Buscar pedidos por cliente"><input type="hidden" name="status" value="{{ selected_status }}"><button type="submit">Buscar</button></form><nav class="order-filters" aria-label="Filtrar pedidos">{% for status in ["Todos", "Pendiente", "Enviando", "Exitoso"] %}<a class="order-filter {% if selected_status == status %}active{% endif %}" href="{{ url_for('users.orders', status=status, customer=customer_query) }}">{{ status }}</a>{% endfor %}</nav></div>
+                <div class="orders-full-table"><div class="orders-full-header"><span>Pedido</span><span>Producto</span><span>Cliente</span><span>Fecha</span><span>Total</span><span>Estado</span></div>{% for order in orders %}<a class="orders-full-row" href="{{ url_for('users.order_detail', order_id=order.id) }}"><strong>#{{ order.id }}</strong><span>{{ order.product }}</span><span>{{ order.customer }}</span><span>{{ order.date }}</span><b>{{ order.amount }}</b><em class="order-status {{ order.status_class }}">{{ order.status }}</em></a>{% else %}<p class="empty-results">No hay pedidos con este estado.</p>{% endfor %}</div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

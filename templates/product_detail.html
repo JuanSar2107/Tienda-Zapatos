@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ product.name }} | Teen Shoes</title>
+    <title>{{ product.name }} | Zapatito Estiloso</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -12,12 +12,12 @@
 <body>
     <div class="store-shell detail-shell">
         <aside class="sidebar">
-            <a class="brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Teen Shoes</strong></a>
+            <a class="brand" href="{{ url_for('users.dashboard') }}"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a>
             <nav class="main-nav" aria-label="Navegacion principal">
                 <a class="nav-item active" href="{{ url_for('users.dashboard') }}"><span>⊞</span>Dashboard</a>
                 <a class="nav-item" href="#orders"><span>♧</span>Pedidos</a>
                 <a class="nav-item" href="{{ url_for('users.dashboard') }}#products"><span>◇</span>Productos</a>
-                <a class="nav-item" href="#wallet"><span>▱</span>Mis ventas</a>
+                <a class="nav-item" href="{{ url_for('users.sales') }}"><span>$</span>Mis ventas</a>
                 <a class="nav-item" href="#help"><span>ⓘ</span>Ayuda</a>
                 <a class="nav-item" href="#settings"><span>⚙</span>Configuracion</a>
             </nav>
@@ -26,6 +26,9 @@
         <main class="main-content">
             <header class="topbar"><a class="back-link" href="{{ url_for('users.dashboard') }}">← Volver al dashboard</a><div class="top-user"><span class="avatar">AR</span><div><strong>Alex Rivera</strong><small>Administrador</small></div></div></header>
             <div class="detail-breadcrumb">Productos <span>/</span> {{ product.name }}</div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}<div class="flash-list">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+            {% endwith %}
             <section class="product-detail">
                 <div class="detail-image"><img src="{{ product.image }}" alt="{{ product.name }}"></div>
                 <div class="detail-info">
@@ -35,8 +38,11 @@
                     <strong class="detail-price">{{ product.price }}</strong>
                     <div class="detail-stock"><span class="stock-dot"></span><strong>{{ product.stock }} unidades disponibles</strong></div>
                     <div class="detail-divider"></div>
-                    <div class="option-block"><h2>Tallas disponibles</h2><div class="option-list">{% for size in product.sizes %}<span>{{ size }}</span>{% endfor %}</div></div>
-                    <div class="option-block"><h2>Colores disponibles</h2><div class="option-list color-list">{% for color in product.colors %}<span>{{ color }}</span>{% endfor %}</div></div>
+                    <form method="post" class="product-form">
+                        <div class="option-block"><h2>Tallas disponibles</h2><div class="option-list">{% for size in product.sizes %}<label class="choice"><input type="radio" name="size" value="{{ size }}" {% if selected_size == size %}checked{% endif %} required><span>{{ size }}</span></label>{% endfor %}</div></div>
+                        <div class="option-block"><h2>Colores disponibles</h2><div class="option-list color-list">{% for color in product.colors %}<label class="choice"><input type="radio" name="color" value="{{ color }}" {% if selected_color == color %}checked{% endif %} required><span>{{ color }}</span></label>{% endfor %}</div></div>
+                        <button class="add-cart-button" type="submit">Agregar a mi carrito <span>→</span></button>
+                    </form>
                 </div>
             </section>
         </main>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard | Teen Shoes</title>
+    <title>Dashboard | Zapatito Estiloso</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -12,44 +12,41 @@
 <body>
     <div class="store-shell">
         <aside class="sidebar">
-            <a class="brand" href="#dashboard"><span class="brand-mark">◔</span><strong>Teen Shoes</strong></a>
+            <a class="brand" href="#dashboard"><span class="brand-mark">◔</span><strong>Zapatito Estiloso</strong></a>
             <nav class="main-nav" aria-label="Navegacion principal">
                 <a class="nav-item active" href="#dashboard"><span>⊞</span>Dashboard</a>
-                <a class="nav-item" href="#orders"><span>♧</span>Pedidos</a>
-                <a class="nav-item" href="#products"><span>◇</span>Productos</a>
-                <a class="nav-item" href="#wallet"><span>▱</span>Mis ventas</a>
-                <a class="nav-item" href="#help"><span>ⓘ</span>Ayuda</a>
-                <a class="nav-item" href="#settings"><span>⚙</span>Configuracion</a>
+                <a class="nav-item" href="{{ url_for('users.orders') }}"><span>♧</span>Pedidos</a>
+                <a class="nav-item" href="{{ url_for('users.sales') }}"><span>$</span>Mis ventas</a>
             </nav>
             <a class="logout" href="#logout"><span>↪</span>Cerrar sesion</a>
         </aside>
 
         <main class="main-content" id="dashboard">
             <header class="topbar">
-                <div class="search-box"><span>⌕</span><input type="search" placeholder="Buscar productos, cupones, precios..." aria-label="Buscar"></div>
-                <div class="top-user"><button class="top-icon" aria-label="Notificaciones">♧<i></i></button><button class="top-icon" aria-label="Mensajes">▱</button><span class="avatar">AR</span><div><strong>{{ admin.name }}</strong><small>Administrador</small></div></div>
+                <form class="search-box" action="{{ url_for('users.dashboard') }}" method="get"><span>⌕</span><input type="search" name="q" value="{{ query }}" placeholder="Buscar productos..." aria-label="Buscar productos"><button type="submit" aria-label="Buscar">→</button></form>
+                <div class="top-user"><a class="cart-link" href="{{ url_for('users.cart') }}" aria-label="Abrir carrito">🛒{% if cart_count %}<b>{{ cart_count }}</b>{% endif %}</a><div class="account-area"><button class="account-trigger" type="button" aria-expanded="false"><span class="avatar">AR</span><div><strong>{{ admin.name }}</strong><small>Administrador</small></div><span class="account-chevron">⌄</span></button><div class="account-menu"><strong>{{ admin.name }}</strong><span>{{ admin.email }}</span><small>Rol: Administrador</small><a href="{{ url_for('auth.logout') }}">↪ Cerrar sesion</a></div></div></div>
             </header>
 
             <div class="dashboard-grid">
                 <section class="primary-column">
                     <div class="section-heading"><h1>Los mas vendidos del mes</h1><button class="more-button" aria-label="Mas opciones">•••</button></div>
                     <div class="bestsellers">
-                        <a class="best-card" href="{{ url_for('users.product_detail', product_id=products[0].id) }}"><span class="ranking">1</span><span class="sold-label">970 vendidos</span><img src="{{ products[0].image }}" alt="{{ products[0].name }}"><div><strong>Striped shoes</strong><span class="stars">★★★★★</span><b>$290.51</b></div></a>
-                        <a class="best-card" href="{{ url_for('users.product_detail', product_id=products[1].id) }}"><span class="ranking">2</span><span class="sold-label">970 vendidos</span><img src="{{ products[1].image }}" alt="{{ products[1].name }}"><div><strong>Green sole shoes</strong><span class="stars">★★★★★</span><b>$328.85</b></div></a>
-                        <a class="best-card" href="{{ url_for('users.product_detail', product_id=products[2].id) }}"><span class="ranking">3</span><span class="sold-label">970 vendidos</span><img src="{{ products[2].image }}" alt="{{ products[2].name }}"><div><strong>Padded shoes</strong><span class="stars">★★★★★</span><b>$275.43</b></div></a>
+                        <a class="best-card" href="{{ url_for('users.product_detail', product_id=featured_products[0].id) }}"><span class="ranking">1</span><span class="sold-label">970 vendidos</span><img src="{{ featured_products[0].image }}" alt="{{ featured_products[0].name }}"><div><strong>Striped shoes</strong><span class="stars">★★★★★</span><b>$290.51</b></div></a>
+                        <a class="best-card" href="{{ url_for('users.product_detail', product_id=featured_products[1].id) }}"><span class="ranking">2</span><span class="sold-label">970 vendidos</span><img src="{{ featured_products[1].image }}" alt="{{ featured_products[1].name }}"><div><strong>Green sole shoes</strong><span class="stars">★★★★★</span><b>$328.85</b></div></a>
+                        <a class="best-card" href="{{ url_for('users.product_detail', product_id=featured_products[2].id) }}"><span class="ranking">3</span><span class="sold-label">970 vendidos</span><img src="{{ featured_products[2].image }}" alt="{{ featured_products[2].name }}"><div><strong>Padded shoes</strong><span class="stars">★★★★★</span><b>$275.43</b></div></a>
                     </div>
 
-                    <div class="section-heading products-heading"><h2>Productos</h2><button class="more-button" aria-label="Mas opciones">•••</button></div>
-                    <div class="categories" aria-label="Categorias de productos"><button class="category active">Zapatos deportivos</button><button class="category">Zapatos de vestir</button><button class="category">Sneakers</button><button class="category">Ballet</button><button class="category">Sandalias</button></div>
-                    <div class="products-grid" id="products">{% for product in products %}<a class="product-card" href="{{ url_for('users.product_detail', product_id=product.id) }}"><div class="product-image"><img src="{{ product.image }}" alt="{{ product.name }}"><span class="favorite" aria-hidden="true">♡</span></div><strong>{{ product.name }}</strong><span class="stars">★★★★★</span><b>{{ product.price }}</b></a>{% endfor %}</div>
+                    <div class="section-heading products-heading"><div><h2>Productos</h2>{% if query %}<p class="search-result">Resultados para “{{ query }}”</p>{% endif %}</div><button class="more-button" aria-label="Mas opciones">•••</button></div>
+                    <div class="products-grid" id="products">{% for product in products %}<a class="product-card" href="{{ url_for('users.product_detail', product_id=product.id) }}"><div class="product-image"><img src="{{ product.image }}" alt="{{ product.name }}"></div><strong>{{ product.name }}</strong><span class="stars">★★★★★</span><b>{{ product.price }}</b></a>{% else %}<p class="empty-results">No encontramos productos con ese nombre.</p>{% endfor %}</div>
                 </section>
 
                 <aside class="right-column">
-                    <section class="side-section"><div class="section-heading"><h2>Ventas por ubicacion</h2><button class="more-button" aria-label="Mas opciones">•••</button></div><div class="location-list">{% for location in locations %}<div class="location-row"><span class="flag">{{ location.flag }}</span><div><strong>{{ location.name }}</strong><small>{{ location.sales }}</small></div><span class="mini-chart {{ location.trend }}">⌁</span><em class="{{ location.trend }}">{{ location.change }}</em></div>{% endfor %}</div></section>
-                    <section class="side-section orders-section" id="orders"><div class="section-heading"><h2>Pedidos</h2><button class="more-button" aria-label="Mas opciones">•••</button></div><div class="orders-table"><div class="order-header"><span>Producto</span><span>Cliente</span><span>Precio</span><span>Estado</span></div>{% for order in recent_orders %}<div class="order-row"><div class="order-product"><img src="{{ order.image }}" alt=""><span>{{ order.product }}</span></div><span class="order-customer">{{ order.customer }}</span><b>{{ order.amount }}</b><span class="order-status {{ order.status_class }}">{{ order.status }}</span></div>{% endfor %}</div></section>
+                    <section class="side-section"><div class="section-heading"><h2>Ventas por ubicacion</h2></div><div class="location-list">{% for location in locations %}<div class="location-row"><span class="flag">{{ location.flag }}</span><div><strong>{{ location.name }}</strong><small>{{ location.sales }}</small></div><span class="mini-chart {{ location.trend }}">⌁</span><em class="{{ location.trend }}">{{ location.change }}</em></div>{% endfor %}</div></section>
+                    <section class="side-section orders-section" id="orders"><div class="section-heading"><div><h2>Pedidos</h2><p class="search-result">Gestion reciente</p></div><a class="text-link" href="{{ url_for('users.orders') }}">Ver todos →</a></div><div class="orders-table"><div class="order-header"><span>Producto</span><span>Cliente</span><span>Precio</span><span>Estado</span></div>{% for order in recent_orders %}<a class="order-row" href="{{ url_for('users.order_detail', order_id=order.id) }}"><div class="order-product"><img src="{{ order.image }}" alt=""><span>{{ order.product }}</span></div><span class="order-customer">{{ order.customer }}</span><b>{{ order.amount }}</b><span class="order-status {{ order.status_class }}">{{ order.status }}</span></a>{% endfor %}</div></section>
                 </aside>
             </div>
         </main>
     </div>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>
