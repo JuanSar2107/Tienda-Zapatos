@@ -1,0 +1,3 @@
+from roles.roles import ADMIN_ROLE, USER_ROLE, AVAILABLE_ROLES
+
+__all__ = ["ADMIN_ROLE", "USER_ROLE", "AVAILABLE_ROLES"]
